@@ -191,6 +191,9 @@ Executable::Executable(const std::shared_ptr<Program> &program,
     llvmModule->print(llvm::errs(), nullptr);
   }
 
+  IVLOG(1, "final print");
+  (*program->module).dump();
+
   auto maybeEngine = ExecutionEngine::create(*program->module, optPipeline);
   llvm::handleAllErrors(
       maybeEngine.takeError(), [](const llvm::ErrorInfoBase &err) {
