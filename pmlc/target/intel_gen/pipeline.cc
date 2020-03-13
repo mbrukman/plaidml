@@ -67,7 +67,7 @@ void addToPipeline(OpPassManager &pm) {
   pm.addPass(createCanonicalizerPass());
   pm.addPass(createCSEPass());*/
 
-  // pm.addPass(createLowerToLLVMPass(true));
+  pm.addPass(createLowerToLLVMPass(true));
 }
 
 static PassPipelineRegistration<>

@@ -999,7 +999,7 @@ plaidml_program* plaidml_compile(  //
       }
     }
     *raw_args = new plaidml_program_args{nargs, args};
-    program->compile(target, debug);
+    program->compile("intel_gen", debug);
     return ret;
   });
 }

@@ -18,5 +18,7 @@ plaidml_cc_library(
         "@llvm-project//mlir:LLVMTransforms",
         "@llvm-project//mlir:MlirOptLib",
         "@llvm-project//mlir:OpenMPDialect",
+        "//pmlc/rt/vulkan:vulkan",
+        #"//pmlc/rt/vulkan:link",
     ],
 )
