@@ -18,7 +18,6 @@
 #include "mlir/Transforms/Passes.h"
 
 #include "pmlc/compiler/registry.h"
-#include "pmlc/rt/vulkan/vulkan_runtime.h"
 #include "pmlc/util/all_dialects.h"
 #include "pmlc/util/all_passes.h"
 #include "pmlc/util/logging.h"
@@ -212,18 +211,6 @@ Executable::Executable(const std::shared_ptr<Program> &program,
 Executable::~Executable() = default;
 
 void Executable::invoke() {
-  IVLOG(1, "Executable target:" << program->targetValue);
-  if (program->targetValue == "intel_gen") {
-    IVLOG(1, "Do setResourceData here");
-    for (size_t i = 0; i < ptrs.size(); i++) {
-      IVLOG(1, "buffer:" << (reinterpret_cast<void **>(ptrs[i]))[0])
-      setResourceData1(0, i, (reinterpret_cast<int64_t **>(ptrs[i]))[0],
-                       (reinterpret_cast<int64_t **>(ptrs[i]))[0], 0,
-                       program->arguments[i].shape.getNumElements(),
-                       program->arguments[i].shape.getRank());
-    }
-  }
-
   auto arrayRef = MutableArrayRef<void *>(ptrs);
   auto result = engine->invoke(program->entry, arrayRef);
   if (result) {

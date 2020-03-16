@@ -1,4 +1,6 @@
-// RUN: pmlc-opt --target-intel_gen | FileCheck %s
+// RUN: pmlc-opt --target-intel_gen 
+
+//pmlc/target/intel_gen/tests:e2e.mlir.test
 
 #map0 = affine_map<(d0, d1, d2, d3, d4, d5, d6) -> (d0, d1, d2, d3)>
 #map1 = affine_map<(d0, d1, d2, d3, d4, d5, d6) -> (d0, d1 + d4 - 1, d2 + d5 - 1, d6)>

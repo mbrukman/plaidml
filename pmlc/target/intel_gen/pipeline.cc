@@ -15,7 +15,8 @@
 #include "mlir/Transforms/Passes.h"
 
 #include "pmlc/compiler/registry.h"
-#include "pmlc/conversion/gpu_legal/LegalizeGpuOpForGpuLowering.h"
+#include "pmlc/conversion/gpu_kernel_outlining/kernel_outlining.h"
+#include "pmlc/conversion/gpu_legal/legalize_gpu_op.h"
 #include "pmlc/conversion/pxa_to_affine/pxa_to_affine.h"
 #include "pmlc/conversion/tile_to_pxa/tile_to_pxa.h"
 #include "pmlc/dialect/tile/transforms/passes.h"
@@ -49,7 +50,7 @@ void addToPipeline(OpPassManager &pm) {
   // pm.addPass(std::make_unique<LoopsToGPUPass>());
   pm.addPass(createSimpleLoopsToGPUPass(1, 1));
   pm.addPass(createCanonicalizerPass());
-  pm.addPass(createGpuKernelOutliningPass());
+  pm.addPass(conversion::kernel_outlining::createPmlcGpuKernelOutliningPass());
 
   // GPU to SPIR-V.
   pm.addPass(createLegalizeStdOpsForSPIRVLoweringPass());

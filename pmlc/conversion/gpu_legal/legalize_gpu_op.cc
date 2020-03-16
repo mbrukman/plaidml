@@ -1,6 +1,6 @@
 // Copyright 2020 Intel Corporation
 
-#include "pmlc/conversion/gpu_legal/LegalizeGpuOpForGpuLowering.h"
+#include "pmlc/conversion/gpu_legal/legalize_gpu_op.h"
 #include <vector>
 
 #include "mlir/Dialect/GPU/GPUDialect.h"

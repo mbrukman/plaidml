@@ -6,17 +6,17 @@ load("//bzl:plaidml.bzl", "plaidml_cc_library")
 load("//vendor/mlir:tblgen.bzl", "COPTS")
 
 plaidml_cc_library(
-    name = "legalize_gpu_op",
+    name = "gpu_kernel_outlining",
     srcs = [
-        "legalize_gpu_op.cc",
-        "legalize_gpu_op.h",
+        "kernel_outlining.cc",
+        "kernel_outlining.h",
     ],
     copts = COPTS,
     tags = ["llvm"],
     deps = [
         "//pmlc/util",
         "@llvm-project//mlir:GPUTransforms",
-        "@llvm-project//mlir:GPUToSPIRVTransforms",
     ],
     alwayslink = 1,
 )
+
