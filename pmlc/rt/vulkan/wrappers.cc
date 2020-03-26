@@ -65,6 +65,26 @@ public:
     vulkanRuntime.setShaderModule(shader, size);
   }
 
+  void createAction() {
+    std::lock_guard<std::mutex> lock(mutex);
+    vulkanRuntime.createAction();
+  }
+
+  void setActionEntryPoint(const char *entryPoint) {
+    std::lock_guard<std::mutex> lock(mutex);
+    vulkanRuntime.setActionEntryPoint(entryPoint);
+  }
+
+  void setActionNumWorkGroups(NumWorkGroups numWorkGroups) {
+    std::lock_guard<std::mutex> lock(mutex);
+    vulkanRuntime.setActionNumWorkGroups(numWorkGroups);
+  }
+
+  void setActionShaderModule(uint8_t *shader, uint32_t size) {
+    std::lock_guard<std::mutex> lock(mutex);
+    vulkanRuntime.setActionShaderModule(shader, size);
+  }
+
   void runOnVulkan() {
     std::lock_guard<std::mutex> lock(mutex);
     if (failed(vulkanRuntime.initRuntime()) || failed(vulkanRuntime.run()) ||
@@ -164,4 +184,26 @@ void _mlir_ciface_fillResource1DFloat(MemRefDescriptor<float, 1> *ptr,
                                       float value) {
   std::fill_n(ptr->allocated, ptr->sizes[0], value);
 }
+
+// Functions used only in vulkan runner
+void createAction(void *vkRuntimeManager) {
+  reinterpret_cast<VulkanRuntimeManager *>(vkRuntimeManager)->createAction();
+}
+void setActionEntryPoint(void *vkRuntimeManager, const char *entryPoint) {
+  reinterpret_cast<VulkanRuntimeManager *>(vkRuntimeManager)
+      ->setActionEntryPoint(entryPoint);
+}
+
+void setActionNumWorkGroups(void *vkRuntimeManager, uint32_t x, uint32_t y,
+                            uint32_t z) {
+  reinterpret_cast<VulkanRuntimeManager *>(vkRuntimeManager)
+      ->setActionNumWorkGroups({x, y, z});
+}
+
+void setActionBinaryShader(void *vkRuntimeManager, uint8_t *shader,
+                           uint32_t size) {
+  reinterpret_cast<VulkanRuntimeManager *>(vkRuntimeManager)
+      ->setActionShaderModule(shader, size);
+}
+
 } // extern "C"

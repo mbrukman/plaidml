@@ -48,6 +48,25 @@ void VulkanRuntime::setShaderModule(uint8_t *shader, uint32_t size) {
   binarySize = size;
 }
 
+void VulkanRuntime::setActionEntryPoint(const char *entryPointName) {
+  auto action = schedule.back();
+  action->entryPoint = entryPointName;
+}
+
+void VulkanRuntime::setActionResourceData(const ResourceData &resData) {
+  resourceData = resData;
+}
+
+void VulkanRuntime::setActionShaderModule(uint8_t *shader, uint32_t size) {
+  binary = shader;
+  binarySize = size;
+}
+
+void VulkanRuntime::setActionNumWorkGroups(
+    const NumWorkGroups &numberWorkGroups) {
+  numWorkGroups = numberWorkGroups;
+}
+
 LogicalResult VulkanRuntime::mapStorageClassToDescriptorType(
     spirv::StorageClass storageClass, VkDescriptorType &descriptorType) {
   switch (storageClass) {
@@ -723,29 +742,13 @@ LogicalResult VulkanRuntime::updateHostMemoryBuffers() {
   return success();
 }
 
-struct Action {
-  virtual ~Action() {}
-};
-
-using ActionPtr = std::shared_ptr<Action>;
-
-struct LaunchKernelAction : Action {
-  VkPipeline pipeline;
-  VkPipelineLayout pipelineLayout;
-  SmallVector<VkDescriptorSet, 4> descriptorSets;
-  NumWorkGroups workGroups;
-  SmallVector<VkBufferMemoryBarrier, 4> deps;
-};
-
-struct MemoryTransferAction : Action {
-  VkBuffer src;
-  VkBuffer dst;
-  SmallVector<VkBufferCopy, 1> regions;
-};
+LogicalResult VulkanRuntime::createAction() {
+  auto action = std::make_shared<Action>();
+  schedule.push_back(action);
+  return success();
+}
 
 LogicalResult VulkanRuntime::createSchedule() {
-  std::vector<ActionPtr> schedule;
-
   VkCommandBufferAllocateInfo allocInfo = {};
   allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
   allocInfo.pNext = nullptr;
