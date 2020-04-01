@@ -31,6 +31,12 @@ static mlir::PassRegistration<StencilPass> xsmmStencilPass(
       auto numThreads = std::thread::hardware_concurrency();
       return createStencilPass(numThreads, target::x86::heatmapCost);
     });
+// TODO: Merge up when ready
+struct XSMMStencilPass;
+static mlir::PassRegistration<XSMMStencilPass> xsmmStencilPassNew(
+    "new-affine-stencil-xsmm",
+    "Find a tiling for extracting 'micro' GEMMs suitable for XSMM.",
+    []() { return createXSMMStencilPass(); });
 
 } // namespace pmlc::dialect::pxa
 

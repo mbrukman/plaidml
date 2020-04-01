@@ -9,6 +9,8 @@ plaidml_cc_library(
     srcs = [
         "autotile.cc",
         "stencil.cc",
+        "stencil_generic.cc",
+        "stencil_xsmm.cc",
         "test_analysis.cc",
         "tile.cc",
     ],
@@ -16,6 +18,7 @@ plaidml_cc_library(
         "autotile.h",
         "tile.h",
         "passes.h",
+        "stencil_generic.h",
         "test_analysis.h",
     ],
     deps = [

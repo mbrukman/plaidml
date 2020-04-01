@@ -24,4 +24,6 @@ using StencilCostFunction =
 std::unique_ptr<mlir::Pass> createStencilPass(unsigned numThreads,
                                               StencilCostFunction costFn);
 
+std::unique_ptr<mlir::Pass> createXSMMStencilPass();
+
 } // namespace pmlc::dialect::pxa
