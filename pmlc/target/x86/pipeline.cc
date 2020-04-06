@@ -120,8 +120,9 @@ void addToPipeline(OpPassManager &pm) {
   pm.addNestedPass<FuncOp>(createCanonicalizerPass());
   pm.addNestedPass<FuncOp>(createCSEPass());
 
-  pm.addPass(pmlc::dialect::pxa::createStencilPass(1, heatmapCost));
-  pm.addPass(createXSMMLoweringPass());
+  // FIXME: This causes assertions in debug builds on linux.
+  // pm.addPass(pmlc::dialect::pxa::createStencilPass(1, heatmapCost));
+  // pm.addPass(createXSMMLoweringPass());
 
   pm.addPass(conversion::pxa_to_affine::createLowerPXAToAffinePass());
   pm.addNestedPass<FuncOp>(createCanonicalizerPass());
